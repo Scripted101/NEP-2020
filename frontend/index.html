@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Timetable Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">AI Generator</div>
+        <ul class="sidebar-links">
+            <li><a href="#" class="sidebar-link active" data-page="dashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></a></li>
+            <li><a href="#" class="sidebar-link" data-page="courses"><i class="fa-solid fa-book"></i><span>Courses</span></a></li>
+            <li><a href="#" class="sidebar-link" data-page="faculty"><i class="fa-solid fa-user-group"></i><span>Faculty</span></a></li>
+            <li><a href="#" class="sidebar-link" data-page="rooms"><i class="fa-solid fa-person-shelter"></i><span>Rooms</span></a></li>
+            <li><a href="#" class="sidebar-link" data-page="students"><i class="fa-solid fa-graduation-cap"></i><span>Student Groups</span></a></li>
+            <li><a href="#" class="sidebar-link" data-page="upload"><i class="fa-solid fa-cloud-upload"></i><span>AI Tools</span></a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <header>
+            <button class="mobile-nav-toggle"><i class="fa-solid fa-bars"></i></button>
+            <h1 id="page-title">Dashboard</h1>
+            <div class="header-right">
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox"><input type="checkbox" id="checkbox" /><div class="slider round"></div></label>
+                </div>
+            </div>
+        </header>
+
+        <main id="dashboard-page" class="page active">
+            <section class="card text-center">
+                <h2>Generate New Timetable</h2>
+                <p>Use the data from Courses, Faculty, Rooms, and Student Groups to generate an optimized schedule.</p>
+                <button id="generate-btn" class="btn-generate">✨ Generate Timetable</button>
+            </section>
+            <section id="timetable-output" class="card" style="display: none;">
+                <button id="export-pdf-btn" class="btn-export" style="display: none; margin-top: 20px;">Export as PDF</button>
+            </section>
+        </main>
+
+        <main id="courses-page" class="page" data-collection="courses">
+            <div class="page-header"><button class="btn-show-form">+ Add New</button></div>
+            <div class="add-form-container" style="display: none;">
+                <section class="card">
+                    <h2>Add New Course</h2>
+                    <form class="input-form">
+                        <div class="form-group">
+                            <label for="course-name">Course Name</label>
+                            <input type="text" id="course-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="course-theory-credits">Theory Credits</label>
+                            <input type="number" id="course-theory-credits" name="theory_credits" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="course-practical-credits">Practical Credits</label>
+                            <input type="number" id="course-practical-credits" name="practical_credits" value="0" required>
+                        </div>
+                        <button type="submit" class="btn-add">Add Course</button>
+                    </form>
+                </section>
+            </div>
+            <section class="card">
+                <h2>Existing Courses</h2>
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Theory Credits</th>
+                                <th>Practical Credits</th>
+                                <th>Total Credits</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr class="empty-row"><td colspan="5">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <main id="faculty-page" class="page" data-collection="faculty">
+            <div class="page-header"><button class="btn-show-form">+ Add New</button></div>
+            <div class="add-form-container" style="display: none;">
+                <section class="card">
+                    <h2>Add New Faculty</h2>
+                    <form class="input-form">
+                        <div class="form-group">
+                            <label for="faculty-name">Faculty Name</label>
+                            <input type="text" id="faculty-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="faculty-expertise">Expertise</label>
+                            <input type="text" id="faculty-expertise" name="expertise">
+                        </div>
+                        <div class="form-group">
+                            <label for="faculty-email">Email</label>
+                            <input type="email" id="faculty-email" name="email">
+                        </div>
+                        <button type="submit" class="btn-add">Add Faculty</button>
+                    </form>
+                </section>
+            </div>
+            <section class="card">
+                <h2>Faculty Directory</h2>
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Expertise</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr class="empty-row"><td colspan="4">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        
+        <main id="rooms-page" class="page" data-collection="rooms">
+            <div class="page-header"><button class="btn-show-form">+ Add New</button></div>
+            <div class="add-form-container" style="display: none;">
+                <section class="card">
+                    <h2>Add New Room/Lab</h2>
+                    <form class="input-form">
+                        <div class="form-group">
+                            <label for="room-name">Room/Lab Name</label>
+                            <input type="text" id="room-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-capacity">Capacity</label>
+                            <input type="number" id="room-capacity" name="capacity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-type">Room Type</label>
+                            <select id="room-type" name="type">
+                                <option value="Lecture Hall">Lecture Hall</option>
+                                <option value="Computer Lab">Computer Lab</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Seminar Hall">Seminar Hall</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-add">Add Room</button>
+                    </form>
+                </section>
+            </div>
+            <section class="card">
+                <h2>Available Rooms & Labs</h2>
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Capacity</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr class="empty-row"><td colspan="4">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <main id="students-page" class="page" data-collection="students">
+            <div class="page-header"><button class="btn-show-form">+ Add New</button></div>
+            <div class="add-form-container" style="display: none;">
+                <section class="card">
+                    <h2>Add New Student Group</h2>
+                    <form class="input-form">
+                        <div class="form-group">
+                            <label for="student-group-name">Student Group Name</label>
+                            <input type="text" id="student-group-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-group-size">Group Size</label>
+                            <input type="number" id="student-group-size" name="size" required>
+                        </div>
+                        <button type="submit" class="btn-add">Add Group</button>
+                    </form>
+                </section>
+            </div>
+            <section class="card">
+                <h2>Student Groups</h2>
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Group Name</th>
+                                <th>Group Size</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr class="empty-row"><td colspan="3">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <main id="upload-page" class="page">
+             <section class="card">
+                <h2>Upload Data via CSV</h2>
+                <p>Upload a CSV file with all courses, teachers, rooms, and groups to populate the database at once.</p>
+                <form>
+                    <div class="file-upload-container">
+                        <input type="file" id="file-upload" class="file-input-hidden" accept=".csv">
+                        <label for="file-upload" class="file-upload-label"><i class="fa-solid fa-upload"></i><span>Choose a CSV file...</span></label>
+                    </div>
+                    <div id="file-info" class="file-info-display" style="display: none;">
+                        <span id="file-name-display"></span>
+                        <button id="btn-analyze" class="btn-analyze" type="submit">Upload & Process File</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
